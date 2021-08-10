@@ -1,0 +1,8 @@
+.container {
+  margin: auto;
+  max-width: 70%;
+}
+
+.container h2 {
+  text-align: center;
+}

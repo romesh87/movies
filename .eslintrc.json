@@ -1,0 +1,58 @@
+{
+    "root": true,
+    "parser": "@typescript-eslint/parser",
+    "extends": [
+      "eslint:recommended",
+      "plugin:@typescript-eslint/eslint-recommended",
+      "plugin:@typescript-eslint/recommended",
+      "plugin:react/recommended",
+      "plugin:import/errors",
+      "plugin:import/warnings",
+      "plugin:jsx-a11y/recommended",
+      "plugin:react-hooks/recommended",
+      "airbnb"
+    ],
+    "env": {
+      "browser": true,
+      "commonjs": true,
+      "es6": true,
+      "node": true
+    },
+    "parserOptions": {
+      "ecmaVersion": 2018,
+      "sourceType": "module",
+      "ecmaFeatures": {
+        "jsx": true
+      }
+    },
+    "settings": {
+      "react": {
+        "version": "detect"
+      },
+      "import/resolver": {
+        "node": {
+            "extensions": [
+                ".js",
+                ".jsx",
+                ".ts",
+                ".tsx"
+            ]
+        }
+      }
+    },
+    "plugins": [],
+    "rules": {
+        "react/react-in-jsx-scope": "off",
+        "react/jsx-props-no-spreading": "off",
+        "react/no-unescaped-entities": "off",
+        "react/prop-types": "off",
+        "react/destructuring-assignment": "off",
+        "react/jsx-filename-extension": [1, { "extensions": [".tsx", ".jsx"] }],
+        "react-hooks/exhaustive-deps": "off",
+        "import/extensions": ["error", {
+          "ts": "never",
+          "tsx": "never"
+        }],
+        "no-unused-vars": ["error", { "vars": "all", "args": "none", "ignoreRestSiblings": false }]
+    }
+}
