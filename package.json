@@ -1,5 +1,5 @@
 {
-  "name": "nextjs-blog",
+  "name": "movies",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -7,7 +7,7 @@
     "build": "next build",
     "export": "next export",
     "start": "next start",
-    "lint": "eslint --ext .ts --ext .tsx --fix ./",
+    "lint": "eslint --ext .ts --ext .tsx ./",
     "lintfix": "eslint --ext .ts --ext .tsx --fix ./"
   },
   "dependencies": {

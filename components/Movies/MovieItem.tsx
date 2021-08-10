@@ -1,6 +1,8 @@
 // eslint-disable-next-line no-use-before-define
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Moment from 'react-moment';
+
+import { getItemFromLocalStorage, setItemInLocalStorage } from '../../utils';
 
 // import { IFeedbackItem } from '../../interfaces';
 
@@ -13,8 +15,30 @@ export interface Props {
 const FeedbackItem: React.FC<Props> = ({ item }) => {
   const [isHighlighted, setIsHighlighted] = useState(false);
 
+  useEffect(() => {
+    const highlightedMovies = JSON.parse(getItemFromLocalStorage('highlighted_movies')) || {};
+    if (highlightedMovies[item.id]) {
+      setIsHighlighted(true);
+    }
+  }, []);
+
+  const handleHighlight = () => {
+    const highlightedMovies = JSON.parse(getItemFromLocalStorage('highlighted_movies')) || {};
+
+    setIsHighlighted((prevState) => {
+      if (highlightedMovies[item.id]) {
+        setItemInLocalStorage('highlighted_movies', JSON.stringify({ ...highlightedMovies, [item.id]: !prevState }));
+      }
+      if (!highlightedMovies[item.id] && !prevState) {
+        setItemInLocalStorage('highlighted_movies', JSON.stringify({ ...highlightedMovies, [item.id]: true }));
+      }
+
+      return !prevState;
+    });
+  };
+
   return (
-    <div className={styles.container}>
+    <div className={isHighlighted ? `${styles.container} ${styles.highlighted}` : styles.container}>
       <div className={styles.header}>
         <div>
           <div className={styles.name}>{item.original_title}</div>
@@ -39,7 +63,7 @@ const FeedbackItem: React.FC<Props> = ({ item }) => {
           Link:
         </div>
       </div>
-      <button type="button">Highlight</button>
+      <button type="button" onClick={handleHighlight}>Highlight</button>
     </div>
   );
 };
