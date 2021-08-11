@@ -1,9 +1,8 @@
-// eslint-disable-next-line no-use-before-define
-import React from 'react';
+import { FC } from 'react';
 
 import MainNavigation from './MainNavigation';
 
-const Layout: React.FC = ({ children }) => (
+const Layout: FC = ({ children }) => (
   <>
     <MainNavigation />
     <main>{children}</main>

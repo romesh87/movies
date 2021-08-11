@@ -11,7 +11,7 @@ const HomePage = () => (
   <>
     <Head>
       <title>Top 500 movies</title>
-      <meta name="description" content="top 500 movies IMDB" />
+      <meta name="description" content="top 500 movies TMDB" />
     </Head>
     <MovieList />
   </>

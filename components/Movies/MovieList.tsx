@@ -1,38 +1,52 @@
-// eslint-disable-next-line no-use-before-define
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState, FC } from 'react';
 
-import MovieItem from './NewMovieItem';
+import MovieItem from './MovieItem';
 import Pagination from '../UI/Pagination/Pagination';
+import { API_BASE_URL, API_KEY } from '../../constants';
 
 import styles from './MovieList.module.css';
 
-export interface Props {
-  list: any;
-}
-
-const FeedbackList: React.FC = () => {
+const MovieList: FC = () => {
   const [list, setList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [sortOrder, setSortOrder] = useState('desc');
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // eslint-disable-next-line no-use-before-define
     fetchData();
   }, []);
 
-  const fetchData = (page = '1') => {
-    fetch(`https://api.themoviedb.org/3/movie/top_rated?api_key=0843fe7349d2e0a2e7cb8fd14fbe9b3f&language=en-US&page=${page}`)
+  const fetchData = (page = '1', sort = 'desc') => {
+    setIsLoading(true);
+    fetch(`${API_BASE_URL}/discover/movie?api_key=${API_KEY}&language=en-US&sort_by=vote_average.${sort}&vote_count.gte=1000&page=${page}`)
       .then((response) => response.json())
       .then((data) => {
-        console.log({ data });
         setList(data.results);
         setIsLoading(false);
+      })
+      .catch((error) => {
+        setIsLoading(false);
+        // eslint-disable-next-line no-console
+        console.log(error);
       });
   };
 
-  const changePage = (e: any) => {
-    fetchData(e.target.textContent);
+  const changePageHandler = (e) => {
+    fetchData(e.target.textContent, sortOrder);
     setCurrentPage(+e.target.textContent);
+  };
+
+  const sortHandler = () => {
+    setSortOrder((prevState) => {
+      if (prevState === 'desc') {
+        fetchData(String(currentPage), 'asc');
+        setCurrentPage(1);
+        return 'asc';
+      }
+      fetchData(String(currentPage), 'desc');
+      setCurrentPage(1);
+      return 'desc';
+    });
   };
 
   let content;
@@ -44,6 +58,10 @@ const FeedbackList: React.FC = () => {
   } else {
     content = (
       <>
+        <div className={styles.sortContainer}>
+          Sort by Rating:
+          <button className={styles.sortBtn} type="button" onClick={sortHandler}>{sortOrder}</button>
+        </div>
         <ul className={styles.grid}>
           {list.map((item) => <MovieItem movie={item} />)}
         </ul>
@@ -51,7 +69,7 @@ const FeedbackList: React.FC = () => {
           resultsCount={500}
           itemsPerPage={20}
           currentPage={currentPage}
-          onClickHandler={changePage}
+          onClickHandler={changePageHandler}
         />
       </>
     );
@@ -65,4 +83,4 @@ const FeedbackList: React.FC = () => {
   );
 };
 
-export default FeedbackList;
+export default MovieList;

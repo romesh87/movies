@@ -1,20 +1,23 @@
-/* eslint-disable camelcase */
-/* eslint-disable jsx-a11y/anchor-is-valid */
-// eslint-disable-next-line no-use-before-define
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState, FC } from 'react';
 import Image from 'next/image';
 import Moment from 'react-moment';
 
-// import { IPost } from '../../interfaces';
 import { getItemFromLocalStorage, setItemInLocalStorage } from '../../utils';
+import { API_BASE_URL, API_KEY } from '../../constants';
 
 import styles from './MovieItem.module.css';
 
-interface Props {
-  movie: any;
+export interface Props {
+  movie: {
+    id: string;
+    original_title: string;
+    release_date: string;
+    vote_average: string;
+    poster_path: string;
+  }
 }
 
-const PostItem: React.FC<Props> = ({ movie }) => {
+const MovieItem: FC<Props> = ({ movie }) => {
   const {
     original_title,
     release_date,
@@ -29,18 +32,22 @@ const PostItem: React.FC<Props> = ({ movie }) => {
 
   useEffect(() => {
     const highlightedMovies = JSON.parse(getItemFromLocalStorage('highlighted_movies')) || {};
+
     if (highlightedMovies[movie.id]) {
       setIsHighlighted(true);
+    } else {
+      setIsHighlighted(false);
     }
-  }, []);
+  }, [movie.id]);
 
   useEffect(() => {
-    fetch(`https://api.themoviedb.org/3/movie/${movie.id}?api_key=0843fe7349d2e0a2e7cb8fd14fbe9b3f&language=en-US`)
+    fetch(`${API_BASE_URL}/movie/${movie.id}?api_key=${API_KEY}&language=en-US`)
       .then((response) => response.json())
       .then((data) => {
-        // console.log({ data });
         setLink(`https://www.imdb.com/title/${data.imdb_id}`);
-      });
+      })
+      // eslint-disable-next-line no-console
+      .catch((error) => console.log(error));
   }, [movie.id]);
 
   const handleHighlight = () => {
@@ -60,29 +67,32 @@ const PostItem: React.FC<Props> = ({ movie }) => {
 
   return (
     <li>
-      <div className={isHighlighted ? `${styles.post} ${styles.highlighted}` : styles.post}>
+      <div className={isHighlighted ? `${styles.movie} ${styles.highlighted}` : styles.movie}>
         <a href={link} target="_blank" rel="noreferrer">
           <div className={styles.image}>
-            <Image
-              src={imagePath}
-              alt={original_title}
-              width={500}
-              height={800}
-              layout="responsive"
-            />
+            { poster_path ? (
+              <Image
+                src={imagePath}
+                alt={original_title}
+                width={500}
+                height={800}
+                layout="responsive"
+              />
+            )
+              : <div className={styles.posterFallback}>No Image</div>}
           </div>
         </a>
         <div className={styles.body}>
           <h3>{original_title}</h3>
           <div className={styles.content}>
             <time>
-              Year:
+              <span className={styles.boldText}>Year: </span>
               <Moment format="YYYY">
                 {release_date}
               </Moment>
             </time>
             <div>
-              Rating:
+              <span className={styles.boldText}>Rating: </span>
               {vote_average}
             </div>
           </div>
@@ -95,4 +105,4 @@ const PostItem: React.FC<Props> = ({ movie }) => {
   );
 };
 
-export default PostItem;
+export default MovieItem;

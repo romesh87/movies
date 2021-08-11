@@ -49,6 +49,11 @@
         "react/destructuring-assignment": "off",
         "react/jsx-filename-extension": [1, { "extensions": [".tsx", ".jsx"] }],
         "react-hooks/exhaustive-deps": "off",
+        "jsx-a11y/anchor-is-valid": "off",
+        "jsx-a11y/no-noninteractive-element-interactions": "off",
+        "jsx-a11y/click-events-have-key-events": "off",
+        "no-use-before-define": "off",
+        "camelcase": "off",
         "import/extensions": ["error", {
           "ts": "never",
           "tsx": "never"

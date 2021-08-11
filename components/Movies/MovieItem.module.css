@@ -1,4 +1,4 @@
-  .post {
+  .movie {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
     background-color: var(--color-grey-50);
     text-align: center;
@@ -12,7 +12,7 @@
     background-color: var(--color-success-100);
   }
 
-  .post a {
+  .movie a {
     color: var(--color-grey-100);
   }
   
@@ -23,6 +23,13 @@
     z-index: 0;
   }
   
+  .posterFallback {
+    height: 350px; 
+    color: black; 
+    font-size: 20px; 
+    padding: 25px; 
+  }
+
   .image img {
     object-fit: cover;
   }
@@ -41,11 +48,6 @@
     max-height: 50px;
   }
   
-  .body time {
-    font-style: italic;
-    color: var(--color-grey-600);
-  }
-  
   .content {
     margin-top: 15px;
     display: flex;
@@ -59,4 +61,8 @@
     outline: none;
     border: none;
     background: transparent;
+  }
+
+  .boldText {
+    font-weight: 600;
   }

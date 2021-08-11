@@ -39,45 +39,6 @@
     transform: scaleX(1);
   }
   
-  .userContainer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 28%;
-  }
-
-  .user {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .userEmail {
-    color:  var(--color-grey-50);
-    margin-left: 1rem;
-  }
-
-  .userImage {
-    border-radius: 50%;
-    background-color: var(--color-grey-50);
-  }
-
-  .logout {
-    cursor: pointer;
-    font: inherit;
-    color: var(--color-grey-50);
-    background-color: inherit;
-    border: 2px solid var(--color-grey-50);
-    border-radius: 8px;
-    width: 23%;
-    padding: 0.3rem;
-  }
-
-  .logout:hover {
-    background-color: var(--color-lightest-blue);
-    border: 3px solid var(--color-lightest-blue);
-  }
-
   @media (min-width: 768px) {
     .header ul {
       gap: 0.5rem;

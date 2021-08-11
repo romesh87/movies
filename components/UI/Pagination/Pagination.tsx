@@ -1,7 +1,4 @@
-/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-// eslint-disable-next-line no-use-before-define
-import React from 'react';
+import { FC } from 'react';
 
 import styles from './Pagination.module.css';
 
@@ -9,10 +6,10 @@ export interface Props {
   resultsCount: number;
   itemsPerPage: number;
   currentPage: number;
-  onClickHandler: (e: any) => void;
+  onClickHandler: (e) => void;
 }
 
-const Pagination: React.FC<Props> = (props) => {
+const Pagination: FC<Props> = (props) => {
   const pages = Math.floor(props.resultsCount / props.itemsPerPage);
   const pagesArray = [];
 
