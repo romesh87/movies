@@ -6,3 +6,13 @@
 .container h2 {
   text-align: center;
 }
+
+.grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+  gap: 1.5rem;
+  align-content: center;
+}

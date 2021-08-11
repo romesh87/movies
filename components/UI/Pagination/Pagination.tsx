@@ -30,7 +30,7 @@ const Pagination: React.FC<Props> = (props) => {
             onClick={(e) => props.onClickHandler(e)}
             style={{
               backgroundColor:
-                +props.currentPage === page ? '#bdc3c7' : 'white',
+                +props.currentPage === page ? '#007CC7' : 'white',
               color: +props.currentPage === page ? 'white' : 'black',
             }}
           >

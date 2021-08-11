@@ -1,36 +1,57 @@
+/* eslint-disable camelcase */
+/* eslint-disable jsx-a11y/anchor-is-valid */
 // eslint-disable-next-line no-use-before-define
 import React, { useEffect, useState } from 'react';
+import Image from 'next/image';
 import Moment from 'react-moment';
 
+// import { IPost } from '../../interfaces';
 import { getItemFromLocalStorage, setItemInLocalStorage } from '../../utils';
-
-// import { IFeedbackItem } from '../../interfaces';
 
 import styles from './MovieItem.module.css';
 
-export interface Props {
-  item: any;
+interface Props {
+  movie: any;
 }
 
-const FeedbackItem: React.FC<Props> = ({ item }) => {
+const PostItem: React.FC<Props> = ({ movie }) => {
+  const {
+    original_title,
+    release_date,
+    vote_average,
+    poster_path,
+  } = movie;
+
+  const imagePath = `https://image.tmdb.org/t/p/w500/${poster_path}`;
+
   const [isHighlighted, setIsHighlighted] = useState(false);
+  const [link, setLink] = useState('#');
 
   useEffect(() => {
     const highlightedMovies = JSON.parse(getItemFromLocalStorage('highlighted_movies')) || {};
-    if (highlightedMovies[item.id]) {
+    if (highlightedMovies[movie.id]) {
       setIsHighlighted(true);
     }
   }, []);
+
+  useEffect(() => {
+    fetch(`https://api.themoviedb.org/3/movie/${movie.id}?api_key=0843fe7349d2e0a2e7cb8fd14fbe9b3f&language=en-US`)
+      .then((response) => response.json())
+      .then((data) => {
+        // console.log({ data });
+        setLink(`https://www.imdb.com/title/${data.imdb_id}`);
+      });
+  }, [movie.id]);
 
   const handleHighlight = () => {
     const highlightedMovies = JSON.parse(getItemFromLocalStorage('highlighted_movies')) || {};
 
     setIsHighlighted((prevState) => {
-      if (highlightedMovies[item.id]) {
-        setItemInLocalStorage('highlighted_movies', JSON.stringify({ ...highlightedMovies, [item.id]: !prevState }));
+      if (highlightedMovies[movie.id]) {
+        setItemInLocalStorage('highlighted_movies', JSON.stringify({ ...highlightedMovies, [movie.id]: !prevState }));
       }
-      if (!highlightedMovies[item.id] && !prevState) {
-        setItemInLocalStorage('highlighted_movies', JSON.stringify({ ...highlightedMovies, [item.id]: true }));
+      if (!highlightedMovies[movie.id] && !prevState) {
+        setItemInLocalStorage('highlighted_movies', JSON.stringify({ ...highlightedMovies, [movie.id]: true }));
       }
 
       return !prevState;
@@ -38,34 +59,40 @@ const FeedbackItem: React.FC<Props> = ({ item }) => {
   };
 
   return (
-    <div className={isHighlighted ? `${styles.container} ${styles.highlighted}` : styles.container}>
-      <div className={styles.header}>
-        <div>
-          <div className={styles.name}>{item.original_title}</div>
-        </div>
-        <div className={styles.datetime}>
-          Year:
-          <Moment format="YYYY">
-            {item.release_date}
-          </Moment>
-        </div>
-        <div className={styles.datetime}>
-          Rating:
-          {item.vote_average}
+    <li>
+      <div className={isHighlighted ? `${styles.post} ${styles.highlighted}` : styles.post}>
+        <a href={link} target="_blank" rel="noreferrer">
+          <div className={styles.image}>
+            <Image
+              src={imagePath}
+              alt={original_title}
+              width={500}
+              height={800}
+              layout="responsive"
+            />
+          </div>
+        </a>
+        <div className={styles.body}>
+          <h3>{original_title}</h3>
+          <div className={styles.content}>
+            <time>
+              Year:
+              <Moment format="YYYY">
+                {release_date}
+              </Moment>
+            </time>
+            <div>
+              Rating:
+              {vote_average}
+            </div>
+          </div>
+          <button className={styles.btnHighlight} type="button" onClick={handleHighlight}>
+            <img height={30} width={30} src="/icons/star.png" alt="star_icon" />
+          </button>
         </div>
       </div>
-      <div className={styles.body}>
-        <div className={styles.datetime}>
-          Image:
-          {item.poster_path}
-        </div>
-        <div className={styles.datetime}>
-          Link:
-        </div>
-      </div>
-      <button type="button" onClick={handleHighlight}>Highlight</button>
-    </div>
+    </li>
   );
 };
 
-export default FeedbackItem;
+export default PostItem;

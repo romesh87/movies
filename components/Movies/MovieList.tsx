@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-use-before-define
 import React, { useEffect, useState } from 'react';
 
-import MovieItem from './MovieItem';
+import MovieItem from './NewMovieItem';
 import Pagination from '../UI/Pagination/Pagination';
 
 import styles from './MovieList.module.css';
@@ -24,6 +24,7 @@ const FeedbackList: React.FC = () => {
     fetch(`https://api.themoviedb.org/3/movie/top_rated?api_key=0843fe7349d2e0a2e7cb8fd14fbe9b3f&language=en-US&page=${page}`)
       .then((response) => response.json())
       .then((data) => {
+        console.log({ data });
         setList(data.results);
         setIsLoading(false);
       });
@@ -43,7 +44,9 @@ const FeedbackList: React.FC = () => {
   } else {
     content = (
       <>
-        {list.map((item) => <MovieItem item={item} />)}
+        <ul className={styles.grid}>
+          {list.map((item) => <MovieItem movie={item} />)}
+        </ul>
         <Pagination
           resultsCount={500}
           itemsPerPage={20}
