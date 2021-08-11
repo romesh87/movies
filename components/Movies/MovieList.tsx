@@ -39,11 +39,11 @@ const MovieList: FC = () => {
   const sortHandler = () => {
     setSortOrder((prevState) => {
       if (prevState === 'desc') {
-        fetchData(String(currentPage), 'asc');
+        fetchData('1', 'asc');
         setCurrentPage(1);
         return 'asc';
       }
-      fetchData(String(currentPage), 'desc');
+      fetchData('1', 'desc');
       setCurrentPage(1);
       return 'desc';
     });
@@ -63,7 +63,7 @@ const MovieList: FC = () => {
           <button className={styles.sortBtn} type="button" onClick={sortHandler}>{sortOrder}</button>
         </div>
         <ul className={styles.grid}>
-          {list.map((item) => <MovieItem movie={item} />)}
+          {list.map((item) => <MovieItem key={item.id} movie={item} />)}
         </ul>
         <Pagination
           resultsCount={500}
